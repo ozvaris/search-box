@@ -1,17 +1,17 @@
 import axios from 'axios';
 let prevKeyword;
-let tokenSource;
+let controller;
 export const fetchData = (keyword, setResults, setIsLoading) => {
   try {
-    if (typeof tokenSource !== typeof undefined) {
-      tokenSource.cancel(prevKeyword + ' Operation canceled due to new request.');
+    if (typeof controller !== typeof undefined) {
+      controller.abort();
     }
 
-    // save the new request for cancellation
-    tokenSource = axios.CancelToken.source();
+    // save the new request for controller
+    controller = new AbortController();
 
     const API_URL = 'https://www.googleapis.com/books/v1/volumes';
-    const DEBOUNCE = 1000;
+    const DEBOUNCE = 100;
 
     // const { data } = await axios.get(`http://www.omdbapi.com/?apikey=8f2b299d&s=${keyword}`, {
     //   cancelToken: tokenSource.token
@@ -24,7 +24,7 @@ export const fetchData = (keyword, setResults, setIsLoading) => {
         params: {
           q: keyword
         },
-        cancelToken: tokenSource.token
+        signal: controller.signal
       })
       .then(({ data }) => {
         console.log(keyword + ' search result.');
@@ -41,7 +41,6 @@ export const fetchData = (keyword, setResults, setIsLoading) => {
         );
       });
   } catch (err) {
-    if (axios.isCancel(err)) return { cancelPrevQuery: true };
     return [err];
   }
 };

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { fetchData } from '../../services/movies';
+import { fetchData } from '../../services/booksAbort';
 import ResultListComponent from '../ResultList';
 import './index.scss';
 
-const SearchBarComponent = () => {
+const SearchBarCancelComponent = () => {
   const [query, setQuery] = useState('');
   const [searchQuery, setSearchQuery] = useState({});
   const [dataList, setDataList] = useState([]);
@@ -37,12 +37,12 @@ const SearchBarComponent = () => {
   return (
     <div>
       <div className="SearchBar">
-        <p className="SearchBar_title">Type to search!</p>
+        <p className="SearchBar_title">Abort Controller axios search!</p>
         <input
           className="SearchBar_input"
           type="text"
           value={query}
-          placeholder="Enter Movie Title"
+          placeholder="Enter Book Title"
           onChange={onChange}
         />
       </div>
@@ -54,4 +54,4 @@ const SearchBarComponent = () => {
   );
 };
 
-export default SearchBarComponent;
+export default SearchBarCancelComponent;
